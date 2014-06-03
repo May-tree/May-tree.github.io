@@ -129,7 +129,7 @@ public class LSH {
         return lshBuckets;
     }
 
-    public ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBucketA(HashMap<Integer, ArrayList<Integer>> sigList, HashMap<Integer, ArrayList<Integer>> semanList) {
+    public ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBucketA(HashMap<Integer, ArrayList<Integer>> sigList, HashMap<Integer, ArrayList<Integer>> semanList,int n) {
         ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBuckets = lshBucket(sigList);
         for (int j = 0; j < lshBuckets.size(); j++) {
             HashMap<List<Integer>, HashSet<Integer>> newlshBucket = new HashMap<>();
@@ -137,11 +137,11 @@ public class LSH {
                 List<Integer> temp = CollectionOperator.deepCopy(sigs);
                 HashSet<Integer> block = lshBuckets.get(j).get(sigs);
                 ArrayList<HashSet<Integer>> setList = new ArrayList<>();
-                for (int i = 0; i < 7; i++) {
+                for (int i = 0; i < n; i++) {
                     setList.add(new HashSet<Integer>());
                 }
                 for (int record : block) {
-                    for (int i = 0; i < 7; i++) {
+                    for (int i = 0; i < n; i++) {
                         if (semanList.get(record).get(i) == 1) {
                             setList.get(i).add(record);
                         }

@@ -56,7 +56,6 @@ public class RaceTree {
 
     public static HashSet<String> leaves(Node<String> node) {
         HashSet<String> leaves = new HashSet<>();
-        
         if (node.children.isEmpty()) {
             leaves.add(node.data);
             return leaves;
@@ -77,6 +76,7 @@ public class RaceTree {
         HashSet<String> leaves = new HashSet<>();
         for (String cate : cateSet) {
             Node<String> temp = nodeMap.get(cate);
+
             leaves.addAll(leaves(temp));
         }
         for (String leaveList1 : leaveList) {

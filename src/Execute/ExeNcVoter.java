@@ -24,7 +24,7 @@ public class ExeNcVoter {
         int Nbd;
         int k = 4;
         int l=30;
-        int n = 7;
+        int n = 8;
 //        double s = 0.3;
 //        double p = 0.4;
         int gramFactor = 4;
@@ -43,7 +43,7 @@ public class ExeNcVoter {
         System.out.println("minHash Done.");
         System.out.println();
 
-        ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBuckets = lsher.lshBucketA(sigList, semanList);
+        ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBuckets = lsher.lshBucketA(sigList,semanList,n);
         System.out.println();
         System.out.println("LSH Done.");
         System.out.println();

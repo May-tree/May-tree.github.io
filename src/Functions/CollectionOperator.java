@@ -242,6 +242,7 @@ public class CollectionOperator {
         System.out.println(Double.parseDouble(df.format(((double)intersect/(double)union.size()))));
 	return Double.parseDouble(df.format(((double)intersect/(double)union.size())));
     }
+    
 
     public static HashSet<HashSet<Integer>> removeSubSet(HashSet<HashSet<Integer>> rawSet) {
         HashSet<HashSet<Integer>> temp = new HashSet<>();
