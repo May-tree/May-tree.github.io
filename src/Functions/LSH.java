@@ -137,11 +137,11 @@ public class LSH {
                 List<Integer> temp = CollectionOperator.deepCopy(sigs);
                 HashSet<Integer> block = lshBuckets.get(j).get(sigs);
                 ArrayList<HashSet<Integer>> setList = new ArrayList<>();
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 7; i++) {
                     setList.add(new HashSet<Integer>());
                 }
                 for (int record : block) {
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < 7; i++) {
                         if (semanList.get(record).get(i) == 1) {
                             setList.get(i).add(record);
                         }
