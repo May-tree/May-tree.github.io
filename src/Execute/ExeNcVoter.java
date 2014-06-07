@@ -3,7 +3,9 @@ package Execute;
 import Functions.CollectionOperator;
 import Functions.LSH;
 import Functions.MinHash;
+import Functions.Statistics;
 import Import.ImportNcVoter;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,8 +13,22 @@ import java.util.HashSet;
 import java.util.List;
 
 public class ExeNcVoter {
-
-    public static void main(String args[]) throws ClassNotFoundException, IOException {      
+	
+//	public static void main(String args[]) throws  IOException, ClassNotFoundException{
+//		ImportNcVoter.NcVoterImport();
+//		HashMap<Integer, String> recordList = ImportNcVoter.recordList;
+//		HashMap<Integer, ArrayList<Integer>> semanList = ImportNcVoter.semanticSig;
+//		HashSet<HashSet<Integer>> differ=main1();
+//		differ.removeAll(main2());
+//		for(HashSet<Integer> pair:differ){
+//			ArrayList<Integer> list=new ArrayList<>(pair);
+//			System.out.println(pair+" "+CollectionOperator.SetSimi(recordList.get(list.get(0)), recordList.get(list.get(1)), 2)+" "+semanList.get(list.get(0))+" "+semanList.get(list.get(1)));
+//		}
+//		
+//		
+//		
+//	}
+    public static void main(String[] args) throws ClassNotFoundException, IOException {      
         ImportNcVoter.NcVoterImport();
         HashMap<Integer, HashSet<Integer>> originCluster = ImportNcVoter.originCluster;
         HashSet<HashSet<Integer>> originGlobalPair = CollectionOperator.pairGraph(originCluster);
@@ -22,15 +38,16 @@ public class ExeNcVoter {
         int Np;
         int Nb;
         int Nbd;
-        int k = 4;
-        int l=30;
-        int n = 8;
-//        double s = 0.3;
-//        double p = 0.4;
-        int gramFactor = 4;
+        int k = 3;
+        int l=64;
+        int n = 12;
+        double s = 0.2;
+        double p = 0.4;
+        int gramFactor = 2;
 //        int l = (int) Math.ceil(Statistics.computeL(k, s, p));
         HashMap<Integer, String> recordList = ImportNcVoter.recordList;
         HashMap<Integer, ArrayList<Integer>> semanList = ImportNcVoter.semanticSig;
+
         MinHash mHasher = new MinHash(gramFactor, k * l);
         LSH lsher = new LSH(k, l, n);
         System.out.println("Data Input Done.");
@@ -43,14 +60,14 @@ public class ExeNcVoter {
         System.out.println("minHash Done.");
         System.out.println();
 
-        ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBuckets = lsher.lshBucketA(sigList,semanList,n);
+        ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBuckets = lsher.lshBucket(sigList);
         System.out.println();
         System.out.println("LSH Done.");
         System.out.println();
 
         HashSet<HashSet<Integer>> rawBlockSets = LSH.rawBlockSets(lshBuckets);
         HashSet<HashSet<Integer>> pureBlockSets = CollectionOperator.removeSubSet(rawBlockSets);
-//        HashMap<Integer, Integer> blockdis = LSH.blockdistribute(pureBlockSets);
+        HashMap<Integer, Integer> blockdis = LSH.blockdistribute(pureBlockSets);
         HashSet<HashSet<Integer>> binaryBlockSets = LSH.binaryBlockSets(pureBlockSets);
         LSH.obtainNb(pureBlockSets);
         LSH.obtainNp(binaryBlockSets, originGlobalPair);
@@ -66,7 +83,12 @@ public class ExeNcVoter {
         double PR = 1-(double) Nbd / (double) Nb;
         double RR = 1 - (double) binaryBlockSets.size() / (double) numOfPairs;
         double FM = (double) (2 * RR * PC) / (double) (RR + PC);
-        
+        for(int key:blockdis.keySet()){ 
+        	System.out.println(key); 
+        } 
+        for(int key:blockdis.keySet()){ 
+        	System.out.println(blockdis.get(key)); 
+      	} 
         System.out.println(PC);
         System.out.println(PP);
         System.out.println(PR);
@@ -75,5 +97,6 @@ public class ExeNcVoter {
         System.out.println();
         System.out.println("All Done.");
     }
+    
     
 }

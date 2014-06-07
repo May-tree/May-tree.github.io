@@ -17,6 +17,7 @@ public class LSH {
     public static int Nbd;
     public static int Np;
     public static int maxLSH = Integer.MAX_VALUE;
+    public static HashSet<HashSet<Integer>> fps;
 
     public LSH(int k2, int l2) {
         k = k2;
@@ -33,9 +34,7 @@ public class LSH {
         ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBuckets = new ArrayList<>();
         for (int i = 0; i < l; i++) {
             lshBuckets.add(new HashMap<List<Integer>, HashSet<Integer>>());
-            for (int key : sigList.keySet()) {
-                HashSet<Integer> sigset=new HashSet<>(sigList.get(key));
-                
+            for (int key : sigList.keySet()) {             
                 if (lshBuckets.get(i).containsKey(sigList.get(key).subList(i * k, (i + 1) * k))) {
                     HashSet<Integer> temp = lshBuckets.get(i).get(sigList.get(key).subList(i * k, (i + 1) * k));
                     temp.add(key);
@@ -61,7 +60,7 @@ public class LSH {
             Random rand = new Random();
             ArrayList<Integer> randList = new ArrayList<>();
             for (int i = 0; i < n; i++) {
-                randList.add(rand.nextInt(5));
+                randList.add(rand.nextInt(12));
             }
             for (List<Integer> sigs : lshBucket.keySet()) {
 
@@ -79,7 +78,7 @@ public class LSH {
                 lshBucket.put(sigs, block);
             }
         }
-
+        System.out.println(lshBuckets.size());
         return lshBuckets;
     }
 
@@ -89,7 +88,7 @@ public class LSH {
             Random rand = new Random();
             ArrayList<Integer> randList = new ArrayList<>();
             for (int i = 0; i < n; i++) {
-                randList.add(rand.nextInt(5));
+                randList.add(rand.nextInt(12));
             }
             HashMap<List<Integer>, HashSet<Integer>> newlshBucket = new HashMap<>();
             for (List<Integer> sigs : lshBuckets.get(j).keySet()) {
@@ -116,8 +115,9 @@ public class LSH {
                 for (int i = 0; i < pureSetList.size(); i++) {
 
                     temp.add(i);
-                    newlshBucket.put(CollectionOperator.deepCopy(temp), pureSetList.get(i));
-                    temp.remove(k);
+                    List<Integer> temptemp=CollectionOperator.deepCopy(temp);
+                    newlshBucket.put(temptemp, pureSetList.get(i));
+//                    temp.remove(k);
                 }
             }
             lshBuckets.set(j, newlshBucket);
@@ -125,11 +125,11 @@ public class LSH {
 //                System.out.println(lshBuckets.get(j).get(key));
 //            }
         }
-
+        System.out.println(lshBuckets.size());
         return lshBuckets;
     }
 
-    public ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBucketA(HashMap<Integer, ArrayList<Integer>> sigList, HashMap<Integer, ArrayList<Integer>> semanList,int n) {
+    public ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBucketA(HashMap<Integer, ArrayList<Integer>> sigList, HashMap<Integer, ArrayList<Integer>> semanList) {
         ArrayList<HashMap<List<Integer>, HashSet<Integer>>> lshBuckets = lshBucket(sigList);
         for (int j = 0; j < lshBuckets.size(); j++) {
             HashMap<List<Integer>, HashSet<Integer>> newlshBucket = new HashMap<>();
@@ -155,10 +155,9 @@ public class LSH {
                     }
                 }
                 for (int i = 0; i < pureSetList.size(); i++) {
-
-                    temp.add(i);
-                    newlshBucket.put(CollectionOperator.deepCopy(temp), pureSetList.get(i));
-                    temp.remove(k);
+                	 temp.add(i);
+                     List<Integer> temptemp=CollectionOperator.deepCopy(temp);
+                     newlshBucket.put(temptemp, pureSetList.get(i));
                 }
             }
             lshBuckets.set(j, newlshBucket);
@@ -232,6 +231,7 @@ public class LSH {
 //				System.out.println("opps!"+id+":"+simi);
 //			}
 //		}
+        fps=noncandidatePairs;
         Np = candidatePairs.size();
         Nbd = noncandidatePairs.size()+Np;
     }

@@ -14,6 +14,7 @@ import java.util.List;
  * @author Nicolas
  * @param <String>
  */
+@SuppressWarnings("hiding")
 public class Tree<String> {
 
     public Node<String> root;
